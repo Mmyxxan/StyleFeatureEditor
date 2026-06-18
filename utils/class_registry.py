@@ -51,7 +51,10 @@ class ClassRegistry:
     def make_dataclass_from_args(self, name):
         return dataclasses.make_dataclass(
             name,
-            [(k, v, dataclasses.field(default=v())) for k, v in self.args.items()],
+            [
+                (k, v, dataclasses.field(default_factory=v))
+                for k, v in self.args.items()
+            ],
         )
 
     def add_to_registry(
