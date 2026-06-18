@@ -45,7 +45,10 @@ class ClassRegistry:
     def make_dataclass_from_classes(self, name):
         return dataclasses.make_dataclass(
             name,
-            [(k, v, dataclasses.field(default=v())) for k, v in self.classes.items()],
+            [
+                (k, v, dataclasses.field(default_factory=v))
+                for k, v in self.classes.items()
+            ],
         )
 
     def make_dataclass_from_args(self, name):
