@@ -172,7 +172,7 @@ def extract_on_paths(file_paths):
         if count % 100 == 0:
             print('{} done with {}/{}'.format(pid, count, tot_count))
         try:
-            res = align_face(file_path, predictor)
+            res, _ = align_face(file_path, predictor)
             res = res.convert('RGB')
             os.makedirs(os.path.dirname(res_path), exist_ok=True)
             res.save(res_path)
