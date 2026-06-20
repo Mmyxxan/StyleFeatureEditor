@@ -176,8 +176,8 @@ def extract_on_paths(file_paths):
             res = res.convert('RGB')
             os.makedirs(os.path.dirname(res_path), exist_ok=True)
             res.save(res_path)
-        except Exception:
-            continue
+        except Exception as e:
+            print(f"ERROR processing {file_path}: {e}")
     print('\tDone!')
 
 
