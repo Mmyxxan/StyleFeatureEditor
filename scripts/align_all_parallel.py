@@ -25,6 +25,7 @@ import scipy.ndimage
 import dlib
 import multiprocessing as mp
 import math
+import shutil
 
 SHAPE_PREDICTOR_PATH = "pretrained_models/shape_predictor_68_face_landmarks.dat"
 
@@ -176,8 +177,12 @@ def extract_on_paths(file_paths):
             res = res.convert('RGB')
             os.makedirs(os.path.dirname(res_path), exist_ok=True)
             res.save(res_path)
+        except AlignerCantFindFaceError:
+            os.makedirs(os.path.dirname(res_path), exist_ok=True)
+            shutil.copy2(file_path, res_path)
+
         except Exception as e:
-            print(f"ERROR processing {file_path}: {e}")
+            print(f"Unexpected error: {e}")
     print('\tDone!')
 
 
