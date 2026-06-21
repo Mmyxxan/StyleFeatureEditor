@@ -64,9 +64,19 @@ class BaseInferenceRunner(BaseRunner):
             
             for tensor in images:
                 image = tensor2im(tensor)
-                img_name = os.path.basename(dataset.paths[global_i])
-                result_batch["img_names"].append(img_name)
-                image.save(output_inv_dir / img_name)
+                img_path = dataset.paths[global_i]
+
+                img_rel_path = os.path.relpath(
+                    img_path,
+                    self.config.data.inference_dir
+                )
+
+                result_batch["img_names"].append(img_rel_path)
+
+                save_path = output_inv_dir / img_rel_path
+                save_path.parent.mkdir(parents=True, exist_ok=True)
+
+                image.save(save_path)
                 global_i += 1
 
             self.method_results.append(result_batch)
@@ -94,7 +104,14 @@ class BaseInferenceRunner(BaseRunner):
                 for edited_imgs, img_name in zip(edited_imgs_batch, method_res_batch["img_names"]):
                     for edited_img_tensor, save_dir in zip(edited_imgs, output_edit_paths):
                         edited_img = tensor2im(edited_img_tensor)
-                        edited_img.save(save_dir / img_name)
+                        save_path = save_dir / img_name
+
+                        save_path.parent.mkdir(
+                            parents=True,
+                            exist_ok=True
+                        )
+
+                        edited_img.save(save_path)
 
 
     @abstractmethod
