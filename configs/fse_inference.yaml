@@ -2,10 +2,12 @@ inference:
   inference_runner: fse_inference_runner
      
   editings_data: {
-              "age": [ 2, 3, 4, 5, 6, 7, 8],
-              "fs_glasses": [5, 10, 15, 20, 25, 30],
-              "fs_smiling": [-10, -9, -8, -7, -6, -5, -4,-3],
-              "styleclip_global_face with hair_face with fire hair_0.10": [5, 9]
+              # "age": [ 2, 3, 4, 5, 6, 7, 8],
+              # "fs_glasses": [5, 10, 15, 20, 25, 30],
+              # "fs_smiling": [-10, -9, -8, -7, -6, -5, -4,-3],
+              # "styleclip_global_face with hair_face with fire hair_0.10": [5, 9], # may need 9 only
+              "styleclip_global_face with hair_face with fire hair_0.10": [9] # may need 9 only
+              # applied to person category of ProGAN training set (cropped to largest face) & FFHQ_1024x1024 (no need cropping) only
             }
 
 

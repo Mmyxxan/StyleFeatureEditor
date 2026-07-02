@@ -61,6 +61,7 @@ class BaseInferenceRunner(BaseRunner):
 
             images, result_batch = self._run_on_batch(input_cuda)
             result_batch["img_names"] = []
+            result_batch["is_person"] = []
             
             for tensor in images:
                 image = tensor2im(tensor)
@@ -72,6 +73,9 @@ class BaseInferenceRunner(BaseRunner):
                 )
 
                 result_batch["img_names"].append(img_rel_path)
+
+                is_person = "person" in Path(img_rel_path).parts
+                result_batch["is_person"].append(is_person)
 
                 save_path = output_inv_dir / img_rel_path
                 save_path.parent.mkdir(parents=True, exist_ok=True)
@@ -101,7 +105,14 @@ class BaseInferenceRunner(BaseRunner):
                     method_res_batch, editing_name, editing_degrees
                 )
 
-                for edited_imgs, img_name in zip(edited_imgs_batch, method_res_batch["img_names"]):
+                for edited_imgs, img_name, is_person in zip(
+                        edited_imgs_batch,
+                        method_res_batch["img_names"],
+                        method_res_batch["is_person"]
+                ):
+                    if not is_person:
+                        continue
+                    
                     for edited_img_tensor, save_dir in zip(edited_imgs, output_edit_paths):
                         edited_img = tensor2im(edited_img_tensor)
                         save_path = save_dir / img_name
